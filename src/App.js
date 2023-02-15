@@ -1,10 +1,9 @@
-import logo from './logo.svg';
 import './App.css';
-import StudentList from './component/studentList';
+import Layout from './layout/layout';
 function App() {
   return (
     <div className="App">
-      <StudentList />
+      <Layout />
     </div>
   );
 }
