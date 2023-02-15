@@ -4,7 +4,7 @@ const datalist = (props) => {
     console.log(props)
     return (
         <div>
-            {props.data.map(item => {
+            {props.map(item => {
                 return <div>
                     <p>{item.name}</p>
                     <div>
