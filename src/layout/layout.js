@@ -2,13 +2,16 @@ import React from 'react'
 import Header from '../component/header'
 import Navbar from '../component/navbar'
 import StudentList from '../component/studentList'
+
+
+import './layout.css'
 function layout() {
   return (
     <div>
         <Header />
-        <div>
+        <div className='contentpage'>
             <Navbar/>
-            <div>
+            <div className='contentdisplay'>
                 <StudentList />
             </div>
         </div>
