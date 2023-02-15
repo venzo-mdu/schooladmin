@@ -1,0 +1,13 @@
+[
+    {
+        "name" : "student Details",
+        "tabletitle" : [
+            {
+                "name" : "Student name",
+                "id" : "student Id",
+                "class" : "class",
+                "subject" : "subject"
+            }
+        ]
+    }
+]

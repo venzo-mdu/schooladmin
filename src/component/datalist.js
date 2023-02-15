@@ -1,8 +1,19 @@
 import React from 'react'
 
-function datalist() {
+const datalist =(props) => 
+{
+    console.log(props)
   return (
-    <div>datalist</div>
+    <div>
+      {props.data.map (item => {
+        return <div>
+            <p>{item.name}</p>
+            <div>
+                
+            </div>
+        </div>
+      })}
+    </div>
   )
 }
 

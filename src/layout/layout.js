@@ -1,7 +1,7 @@
 import React from 'react'
 import Header from '../component/header'
 import Navbar from '../component/navbar'
-import StudentList from '../component/studentList'
+import Route from '../layout/route'
 
 
 import './layout.css'
@@ -12,7 +12,7 @@ function layout() {
         <div className='contentpage'>
             <Navbar/>
             <div className='contentdisplay'>
-                <StudentList />
+                <Route />
             </div>
         </div>
     </div>
