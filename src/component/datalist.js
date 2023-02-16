@@ -1,85 +1,88 @@
 import React from 'react'
 import Popup from '../component/popup/popup'
-import { db, auth, storage } from '../firebase'
+import { db } from '../firebase'
 import { v4 } from "uuid";
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { getDoc, doc, updateDoc, arrayUnion, setDoc } from 'firebase/firestore';
 
 import '../component/popup/popup.css'
 
 const Datalist = (props) => {
- 
+
     const data = props.data;
     const [buttonPopup, setButtonPopup] = useState(false);
     const [titleInput, setTitleInput] = useState("")
     const [classInput, setClassInput] = useState("")
     const [courseInput, setCourseInput] = useState("")
     const createData = async () => {
-        const docref = doc(db, 'schooladmin', details);    
+
+        const docref = doc(db, 'schoolentry', 'details');
+        const details = await (await getDoc(docref));
+
         const datalist = {
-          id: v4(),
-          title: titleInput,
-          class: classInput,
-          course: courseInput,
-        }
-        let details = await getDoc(docref)
-            // if(details.data() === undefined){
-            //   await setDoc(docref, {
-            //     trans: [datalist]
-            //   })
-            // }else{
-            // await updateDoc(docref, {
-            //   trans: arrayUnion(datalist)
-            // })}
-            console.log(details,'hi')
-
-          
-        //   setTitleInput('')
-        //   setClassInput('')
-        //   setCourseInput('')
+            id: v4(),
+            name: titleInput,
+            class: classInput,
+            course: courseInput,
         }
 
-
+        if (data.title === 'Student Details') {
+            if (details.data() === undefined) {
+                await setDoc(docref.data(), {
+                    'students[0].tabelcontent': [datalist]
+                })
+            } else {
+                await updateDoc(docref, {
+                    'students.tabelcontent': arrayUnion(datalist)
+                })
+            }
+        }
+         if (data.title === "Teacher Details") {
+            if (details.data() === undefined) {
+                await setDoc(docref.data(), {
+                    'teacher[0].tabelcontent': [datalist]
+                })
+            } else {
+                await updateDoc(docref, {
+                    'teacher.tabelcontent': arrayUnion(datalist)
+                })
+            }
+        }
+        setTitleInput('')
+        setClassInput('')
+        setCourseInput('')
+    }
 
     return (
         <div>
-            {data.map((item) => {
-                return <div>
-                    <p>{item.title}</p>
-                    <button onClick={()=> setButtonPopup(true)}>Add</button>
-
-                    <div>
-                        <table>
-                            <tr>
-                                <th>{item.tableHeading.name}</th>
-                                <th>{item.tableHeading.id}</th>
-                                <th>{item.tableHeading.class}</th>
-                                <th>{item.tableHeading.course}</th>
+            <div>
+                <p>{data?.title}</p>
+                <button onClick={() => setButtonPopup(true)}>Add</button>
+                <div>
+                    <table>
+                        <tr>
+                            <th>{data?.tableHeading?.name}</th>
+                            <th>{data?.tableHeading?.id}</th>
+                            <th>{data?.tableHeading?.class}</th>
+                            <th>{data?.tableHeading?.course}</th>
+                        </tr>
+                        {data?.tabelcontent?.map((item, index) => {
+                            return <tr>
+                                <td>{item.name}</td>
+                                <td>{item.name?index + 1:''}</td>
+                                <td>{item.class}</td>
+                                <td>{item.course}</td>
                             </tr>
-                            {/* {item.teacherContent.data.map(item => {
-                                return <tr>
-                                    <td>{item.name}</td>
-                                    <td>{item.id}</td>
-                                    <td>{item.class}</td>
-                                    <td>{item.subject}</td>
-                                </tr>
-                            })} */}
-
-
-                        </table>
-
-
-                    </div>
+                        })}
+                    </table>
                 </div>
-            })}
+            </div>
             <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
-                <form >
-                    <p id='joinourteamText'>add details</p>
-                     <label>Name</label><input className='Fname' name='name' required type="text"value={titleInput} onChange={(e) => setTitleInput(e.target.value)} /><br></br>
-                     <label>class</label><input className='Femail' name='class' required type="text"value={classInput} onChange={(e) => setClassInput(e.target.value)}/><br></br>
-                     <label>Course</label><input className='Fphone' name='course' required type="text"value={courseInput} onChange={(e) => setCourseInput(e.target.value)}/>
-                     <button  className='Fbutton' onClick={createData}>Add</button>
-                     </form>
+                <p id='joinourteamText'>add details</p>
+                <label>Name</label><input className='Fname' name='name' required type="text" value={titleInput} onChange={(e) => setTitleInput(e.target.value)} /><br></br>
+                <label>class</label><input className='Femail' name='class' required type="text" value={classInput} onChange={(e) => setClassInput(e.target.value)} /><br></br>
+                <label>Course</label><input className='Fphone' name='course' required type="text" value={courseInput} onChange={(e) => setCourseInput(e.target.value)} />
+                <p className='Fbutton' onClick={createData}>Add</p>
             </Popup>
         </div>
     )
