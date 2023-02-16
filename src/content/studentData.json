@@ -1,0 +1,27 @@
+[
+    {
+        "name" : "student Details",
+        "tabletitle" : [
+            {
+                "name" : "Student name",
+                "id" : "student Id",
+                "class" : "class",
+                "subject" : "subject"
+            }
+        ],
+        "tablecont" : [
+            {
+                "name" : "priya",
+                "id" : "01",
+                "class" : "1 std",
+                "subject" : "maths"
+            },
+            {
+                "name" : "gowtham",
+                "id" : "03",
+                "class" : "LKG",
+                "subject" : "rhyms"
+            }
+        ]
+    }
+]
