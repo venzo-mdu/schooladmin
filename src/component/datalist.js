@@ -62,12 +62,15 @@ const Datalist = (props) => {
         const details = await getDoc(docref);
         const list = details.data().students
         const list1 =details.data().teacher
-
+        setButtonPopup(true)
         // console.log('vetty',(list.tabelcontent.id === value))
         if (data.title === 'Student Details') {
             {list.tabelcontent.map(item =>{
             if(item.id === value){
-                console.log(item, 'value')
+                console.log( item.name)  
+                setTitleInput(item.name)
+                setClassInput(item.class)
+                setCourseInput(item.course)
             }
         })}
     }
@@ -80,12 +83,19 @@ const Datalist = (props) => {
     }
 
     }
+    const cleardata =() =>{
+        setButtonPopup(true)
+        setTitleInput('')
+        setClassInput('')
+        setCourseInput('')
+    }
+
 
     return (
         <div>
             <div>
                 <p>{data?.title}</p>
-                <button onClick={() => setButtonPopup(true)}>Add</button>
+                <button onClick={() =>cleardata()}>Add</button>
                 <div>
                     <table>
                         <tr>
