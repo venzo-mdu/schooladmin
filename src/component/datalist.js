@@ -3,13 +3,17 @@ import Popup from '../component/popup/popup'
 import { db } from '../firebase'
 import { v4 } from "uuid";
 import { useState } from 'react'
-import { getDoc, doc, updateDoc, arrayUnion, setDoc } from 'firebase/firestore';
+import { getDoc, doc, updateDoc, arrayUnion, setDoc, where } from 'firebase/firestore';
 
 import '../component/popup/popup.css'
+import { async } from '@firebase/util';
 
 const Datalist = (props) => {
 
     const data = props.data;
+    // console.log(data)
+
+
     const [buttonPopup, setButtonPopup] = useState(false);
     const [titleInput, setTitleInput] = useState("")
     const [classInput, setClassInput] = useState("")
@@ -17,7 +21,7 @@ const Datalist = (props) => {
     const createData = async () => {
 
         const docref = doc(db, 'schoolentry', 'details');
-        const details = await (await getDoc(docref));
+        const details =await getDoc(docref);
 
         const datalist = {
             id: v4(),
@@ -52,6 +56,30 @@ const Datalist = (props) => {
         setClassInput('')
         setCourseInput('')
     }
+    const editdata = async(value) =>{
+        let setData1;
+        const docref = doc(db, 'schoolentry', 'details');
+        const details = await getDoc(docref);
+        const list = details.data().students
+        const list1 =details.data().teacher
+
+        // console.log('vetty',(list.tabelcontent.id === value))
+        if (data.title === 'Student Details') {
+            {list.tabelcontent.map(item =>{
+            if(item.id === value){
+                console.log(item, 'value')
+            }
+        })}
+    }
+    if (data.title === "Teacher Details") {
+        {list1.tabelcontent.map(item =>{
+            if(item.id === value){
+                console.log(item, 'value')
+            }
+        })}
+    }
+
+    }
 
     return (
         <div>
@@ -65,6 +93,8 @@ const Datalist = (props) => {
                             <th>{data?.tableHeading?.id}</th>
                             <th>{data?.tableHeading?.class}</th>
                             <th>{data?.tableHeading?.course}</th>
+                            <th >Edit</th>
+
                         </tr>
                         {data?.tabelcontent?.map((item, index) => {
                             return <tr>
@@ -72,6 +102,7 @@ const Datalist = (props) => {
                                 <td>{item.name?index + 1:''}</td>
                                 <td>{item.class}</td>
                                 <td>{item.course}</td>
+                                <td  value={item.id} onClick={() =>editdata(item.id)}>Edit</td>
                             </tr>
                         })}
                     </table>
