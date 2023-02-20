@@ -18,10 +18,13 @@ const Datalist = (props) => {
     const [titleInput, setTitleInput] = useState("")
     const [classInput, setClassInput] = useState("")
     const [courseInput, setCourseInput] = useState("")
+
+
+
     const createData = async () => {
 
         const docref = doc(db, 'schoolentry', 'details');
-        const details =await getDoc(docref);
+        const details = await getDoc(docref);
 
         const datalist = {
             id: v4(),
@@ -41,7 +44,7 @@ const Datalist = (props) => {
                 })
             }
         }
-         if (data.title === "Teacher Details") {
+        if (data.title === "Teacher Details") {
             if (details.data() === undefined) {
                 await setDoc(docref.data(), {
                     'teacher[0].tabelcontent': [datalist]
@@ -56,34 +59,41 @@ const Datalist = (props) => {
         setClassInput('')
         setCourseInput('')
     }
-    const editdata = async(value) =>{
+    const editdata = async (value) => {
         let setData1;
         const docref = doc(db, 'schoolentry', 'details');
         const details = await getDoc(docref);
         const list = details.data().students
-        const list1 =details.data().teacher
+        const list1 = details.data().teacher
         setButtonPopup(true)
         // console.log('vetty',(list.tabelcontent.id === value))
         if (data.title === 'Student Details') {
-            {list.tabelcontent.map(item =>{
-            if(item.id === value){
-                console.log( item.name)  
-                setTitleInput(item.name)
-                setClassInput(item.class)
-                setCourseInput(item.course)
+            {
+                list.tabelcontent.map(item => {
+                    if (item.id === value) {
+                        console.log(item.name)
+                        setTitleInput(item.name)
+                        setClassInput(item.class)
+                        setCourseInput(item.course)
+                    }
+                })
             }
-        })}
-    }
-    if (data.title === "Teacher Details") {
-        {list1.tabelcontent.map(item =>{
-            if(item.id === value){
-                console.log(item, 'value')
+        }
+        if (data.title === "Teacher Details") {
+            {
+                list1.tabelcontent.map(item => {
+                    if (item.id === value) {
+                        console.log(item.name)
+                        setTitleInput(item.name)
+                        setClassInput(item.class)
+                        setCourseInput(item.course)
+                    }
+                })
             }
-        })}
-    }
+        }
 
     }
-    const cleardata =() =>{
+    const cleardata = () => {
         setButtonPopup(true)
         setTitleInput('')
         setClassInput('')
@@ -95,7 +105,7 @@ const Datalist = (props) => {
         <div>
             <div>
                 <p>{data?.title}</p>
-                <button onClick={() =>cleardata()}>Add</button>
+                <button onClick={() => cleardata()}>Add</button>
                 <div>
                     <table>
                         <tr>
@@ -109,10 +119,10 @@ const Datalist = (props) => {
                         {data?.tabelcontent?.map((item, index) => {
                             return <tr>
                                 <td>{item.name}</td>
-                                <td>{item.name?index + 1:''}</td>
+                                <td>{item.name ? index + 1 : ''}</td>
                                 <td>{item.class}</td>
                                 <td>{item.course}</td>
-                                <td  value={item.id} onClick={() =>editdata(item.id)}>Edit</td>
+                                <td value={item.id} onClick={() => editdata(item.id)}>Edit</td>
                             </tr>
                         })}
                     </table>
@@ -124,6 +134,7 @@ const Datalist = (props) => {
                 <label>class</label><input className='Femail' name='class' required type="text" value={classInput} onChange={(e) => setClassInput(e.target.value)} /><br></br>
                 <label>Course</label><input className='Fphone' name='course' required type="text" value={courseInput} onChange={(e) => setCourseInput(e.target.value)} />
                 <p className='Fbutton' onClick={createData}>Add</p>
+                
             </Popup>
         </div>
     )

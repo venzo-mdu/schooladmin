@@ -169,3 +169,17 @@ input {
              margin: 8% 0 0 75%;
               border: none;
             }
+
+            .Fbutton1 {
+                background: linear-gradient(272.33deg, #AD00FF 21.7%, #FF7A00 103.44%);
+                border-radius: 8px;
+                padding: 1% 5%;
+                font-family: 'Poppins';
+                font-style: normal;
+                font-weight: 500;
+                font-size: 16px;
+                line-height: 120%;
+                color: #FFFFFF;
+                 margin: 8% 0 0 75%;
+                  border: none;
+                }
