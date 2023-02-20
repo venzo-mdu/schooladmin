@@ -6,20 +6,15 @@ import { useState } from 'react'
 import { getDoc, doc, updateDoc, arrayUnion, setDoc, where } from 'firebase/firestore';
 
 import '../component/popup/popup.css'
-import { async } from '@firebase/util';
 
 const Datalist = (props) => {
 
     const data = props.data;
-    // console.log(data)
-
 
     const [buttonPopup, setButtonPopup] = useState(false);
     const [titleInput, setTitleInput] = useState("")
     const [classInput, setClassInput] = useState("")
     const [courseInput, setCourseInput] = useState("")
-
-
 
     const createData = async () => {
 
@@ -36,22 +31,22 @@ const Datalist = (props) => {
         if (data.title === 'Student Details') {
             if (details.data() === undefined) {
                 await setDoc(docref.data(), {
-                    'students[0].tabelcontent': [datalist]
+                    'students[0].tablecontent': [datalist]
                 })
             } else {
                 await updateDoc(docref, {
-                    'students.tabelcontent': arrayUnion(datalist)
+                    'students.tablecontent': arrayUnion(datalist)
                 })
             }
         }
         if (data.title === "Teacher Details") {
             if (details.data() === undefined) {
                 await setDoc(docref.data(), {
-                    'teacher[0].tabelcontent': [datalist]
+                    'teacher[0].tablecontent': [datalist]
                 })
             } else {
                 await updateDoc(docref, {
-                    'teacher.tabelcontent': arrayUnion(datalist)
+                    'teacher.tablecontent': arrayUnion(datalist)
                 })
             }
         }
@@ -59,31 +54,37 @@ const Datalist = (props) => {
         setClassInput('')
         setCourseInput('')
     }
+
     const editdata = async (value) => {
-        let setData1;
+
         const docref = doc(db, 'schoolentry', 'details');
         const details = await getDoc(docref);
         const list = details.data().students
         const list1 = details.data().teacher
         setButtonPopup(true)
-        // console.log('vetty',(list.tabelcontent.id === value))
+
+        const datalist = {
+            name: titleInput,
+            class: classInput,
+            course: courseInput,
+        }
+
         if (data.title === 'Student Details') {
             {
-                list.tabelcontent.map(item => {
+                list.tablecontent.map(item => {
                     if (item.id === value) {
-                        console.log(item.name)
                         setTitleInput(item.name)
                         setClassInput(item.class)
                         setCourseInput(item.course)
                     }
                 })
+               
             }
         }
         if (data.title === "Teacher Details") {
             {
-                list1.tabelcontent.map(item => {
+                list1.tablecontent.map(item => {
                     if (item.id === value) {
-                        console.log(item.name)
                         setTitleInput(item.name)
                         setClassInput(item.class)
                         setCourseInput(item.course)
@@ -91,15 +92,18 @@ const Datalist = (props) => {
                 })
             }
         }
+    
+
+
 
     }
+
     const cleardata = () => {
         setButtonPopup(true)
         setTitleInput('')
         setClassInput('')
         setCourseInput('')
     }
-
 
     return (
         <div>
@@ -114,9 +118,8 @@ const Datalist = (props) => {
                             <th>{data?.tableHeading?.class}</th>
                             <th>{data?.tableHeading?.course}</th>
                             <th >Edit</th>
-
                         </tr>
-                        {data?.tabelcontent?.map((item, index) => {
+                        {data?.tablecontent?.map((item, index) => {
                             return <tr>
                                 <td>{item.name}</td>
                                 <td>{item.name ? index + 1 : ''}</td>
