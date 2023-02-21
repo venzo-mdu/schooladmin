@@ -6,6 +6,7 @@ import { useState } from 'react'
 import { getDoc, doc, updateDoc, arrayUnion, setDoc, where } from 'firebase/firestore';
 
 import '../component/popup/popup.css'
+import { async } from '@firebase/util';
 
 const Datalist = (props) => {
 
@@ -27,7 +28,6 @@ const Datalist = (props) => {
             class: classInput,
             course: courseInput,
         }
-
         if (data.title === 'Student Details') {
             if (details.data() === undefined) {
                 await setDoc(docref.data(), {
@@ -50,12 +50,20 @@ const Datalist = (props) => {
                 })
             }
         }
+
+       
+
         setTitleInput('')
         setClassInput('')
         setCourseInput('')
     }
 
     const editdata = async (value) => {
+        const datalist = {
+            name: titleInput,
+            class: classInput,
+            course: courseInput,
+        }
 
         const docref = doc(db, 'schoolentry', 'details');
         const details = await getDoc(docref);
@@ -63,40 +71,32 @@ const Datalist = (props) => {
         const list1 = details.data().teacher
         setButtonPopup(true)
 
-        const datalist = {
-            name: titleInput,
-            class: classInput,
-            course: courseInput,
-        }
-
         if (data.title === 'Student Details') {
-            {
-                list.tablecontent.map(item => {
-                    if (item.id === value) {
-                        setTitleInput(item.name)
-                        setClassInput(item.class)
-                        setCourseInput(item.course)
-                    }
-                })
-               
-            }
+
+            list.tablecontent.map(item => {
+                if (item.id === value) {
+                    setTitleInput(item.name)
+                    setClassInput(item.class)
+                    setCourseInput(item.course)
+
+                }
+            })
         }
         if (data.title === "Teacher Details") {
-            {
-                list1.tablecontent.map(item => {
-                    if (item.id === value) {
-                        setTitleInput(item.name)
-                        setClassInput(item.class)
-                        setCourseInput(item.course)
-                    }
-                })
-            }
+            list1.tablecontent.map(item => {
+                if (item.id === value) {
+                    setTitleInput(item.name)
+                    setClassInput(item.class)
+                    setCourseInput(item.course)
+                }
+            })
         }
-    
+        // const docref1 = doc(db, 'schoolentry', 'details')
 
-
-
+        
     }
+
+
 
     const cleardata = () => {
         setButtonPopup(true)
@@ -137,7 +137,6 @@ const Datalist = (props) => {
                 <label>class</label><input className='Femail' name='class' required type="text" value={classInput} onChange={(e) => setClassInput(e.target.value)} /><br></br>
                 <label>Course</label><input className='Fphone' name='course' required type="text" value={courseInput} onChange={(e) => setCourseInput(e.target.value)} />
                 <p className='Fbutton' onClick={createData}>Add</p>
-                
             </Popup>
         </div>
     )
