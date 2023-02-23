@@ -14,7 +14,7 @@ const Datalist = (props) => {
     const [titleInput, setTitleInput] = useState("")
     const [classInput, setClassInput] = useState("")
     const [courseInput, setCourseInput] = useState("")
-    const [indexs ,setIndex] = useState('')
+    const [indexs, setIndex] = useState('')
 
     const createData = async () => {
 
@@ -33,10 +33,16 @@ const Datalist = (props) => {
                     'students[0].tablecontent': [datalist]
                 })
             } else {
+                console.log(data.tablecontent)
+                data.tablecontent.push(datalist)
+                // await updateDoc(docref, {
+                //     'students.tablecontent': (datalist)
+                // })
                 await updateDoc(docref, {
-                    'students.tablecontent': arrayUnion(datalist)
+                    'students.tablecontent': data.tablecontent
                 })
             }
+
         }
         if (data.title === "Teacher Details") {
             if (details.data() === undefined) {
@@ -44,8 +50,9 @@ const Datalist = (props) => {
                     'teacher[0].tablecontent': [datalist]
                 })
             } else {
+                data.tablecontent.push(datalist)
                 await updateDoc(docref, {
-                    'teacher.tablecontent': arrayUnion(datalist)
+                    'teacher.tablecontent': data.tablecontent
                 })
             }
         }
@@ -55,55 +62,93 @@ const Datalist = (props) => {
         setCourseInput('')
     }
 
-    const editdata = async (value,index) => {
-        setIndex(index)
-        const docref = doc(db, 'schoolentry', 'details');
-        const details = await getDoc(docref);
-        const list = details.data().students
-        const list1 = details.data().teacher
-        setButtonPopup(true)
-        if (data.title === 'Student Details') {
+    // const editdata = async (value,index) => {
+    //     const docref = doc(db, 'schoolentry', 'details');
+    //     const details = await getDoc(docref);
+    //     const list = details.data().students
+    //     const list1 = details.data().teacher
+    //     setButtonPopup(true)
+    //     if (data.title === 'Student Details') {
 
-            list.tablecontent.map(item => {
+    //         list.tablecontent.map(item => {
+    //             if (item.id === value.id) {
+    //                 setTitleInput(item.name)
+    //                 setClassInput(item.class)
+    //                 setCourseInput(item.course)
+    //                 setIndex(item.id)
+
+    //             }
+    //         })
+    //     }
+    //     if (data.title === "Teacher Details") {
+    //         list1.tablecontent.map(item => {
+    //             if (item.id === value) {
+    //                 setTitleInput(item.name)
+    //                 setClassInput(item.class)
+    //                 setCourseInput(item.course)
+    //                 setIndex(item.id)
+
+    //             }
+    //         })
+    //     }
+    // }
+    const editdata = async (value, index) => {
+        setButtonPopup(true)
+        setIndex(index)
+        if (data.title === 'Student Details') {
+            data.tablecontent.map(item => {
                 if (item.id === value.id) {
                     setTitleInput(item.name)
                     setClassInput(item.class)
                     setCourseInput(item.course)
-
                 }
             })
         }
         if (data.title === "Teacher Details") {
-            list1.tablecontent.map(item => {
-                if (item.id === value) {
+            data.tablecontent.map(item => {
+                if (item.id === value.id) {
                     setTitleInput(item.name)
                     setClassInput(item.class)
                     setCourseInput(item.course)
                 }
             })
         }
+
     }
-    const [list2, setList2] =useState([])
-    const updatedata = async() =>{
+
+    const updatedata = async () => {
+        data.tablecontent[indexs].name = titleInput
+        data.tablecontent[indexs].class = classInput
+        data.tablecontent[indexs].course = courseInput
+        const value = data.tablecontent[indexs]
         const docref = doc(db, 'schoolentry', 'details');
-        const details = await (await getDoc(docref)).data();
-        const list = details.students
-        const list1 = details.teacher
+        console.log(value)
 
-        const listdata =list.tablecontent
-        const datas =listdata.splice(indexs, 1)
-        setList2(datas)
-        console.log(datas)
-
-        if (data.title === 'Student Details') {
-            await setDoc(docref, {
-                'students[0].tablecontent': [list2]
+        if (data.title === "Student Details") {
+            await updateDoc(docref, {
+                'students.tablecontent': data.tablecontent
+            })
+        }else if (data.title === "Teacher Details") {
+            await updateDoc(docref, {
+                'teacher.tablecontent': data.tablecontent
             })
         }
-
-
     }
+    const deletedata = async (indexs) => {
+        data.tablecontent.splice(indexs, 1)
+        console.log(data.tablecontent, indexs)
+        const docref = doc(db, 'schoolentry', 'details');
 
+        if (data.title === "Student Details") {
+            await updateDoc(docref, {
+                'students.tablecontent': data.tablecontent
+            })
+        }else if (data.title === "Teacher Details") {
+            await updateDoc(docref, {
+                'teacher.tablecontent': data.tablecontent
+            })
+        }
+    }
 
     const cleardata = () => {
         setButtonPopup(true)
@@ -125,14 +170,18 @@ const Datalist = (props) => {
                             <th>{data?.tableHeading?.class}</th>
                             <th>{data?.tableHeading?.course}</th>
                             <th >Edit</th>
+                            <th >delete</th>
+
                         </tr>
                         {data?.tablecontent?.map((item, index) => {
-                            return <tr>                                
+                            return <tr>
                                 <td>{item.name}</td>
                                 <td>{item.name ? index : ''}</td>
                                 <td>{item.class}</td>
                                 <td>{item.course}</td>
-                                <td value={item.id} onClick={() => editdata(item,index)}>Edit</td>
+                                <td value={item.id} onClick={() => editdata(item, index)}>Edit</td>
+                                <td value={item.id} onClick={() => deletedata(index)}>delete</td>
+
                             </tr>
                         })}
                     </table>
