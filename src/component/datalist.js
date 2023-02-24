@@ -1,13 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Popup from '../component/popup/popup'
 import { db } from '../firebase'
 import { v4 } from "uuid";
 import { useState } from 'react'
-import { getDoc, doc, updateDoc, arrayUnion, setDoc, arrayRemove, FieldValue, Firestore, deleteField } from 'firebase/firestore';
+import { getDoc, doc, updateDoc, setDoc } from 'firebase/firestore';
 import '../component/popup/popup.css'
+import student from '../content/studentData.json'
 
 const Datalist = (props) => {
-
     const data = props.data;
 
     const [buttonPopup, setButtonPopup] = useState(false);
@@ -15,6 +15,22 @@ const Datalist = (props) => {
     const [classInput, setClassInput] = useState("")
     const [courseInput, setCourseInput] = useState("")
     const [indexs, setIndex] = useState('')
+    const [list, setList] = useState([])
+    const [formtitle, setFormtitle] = useState([])
+
+    const createform = () => {
+
+        if (data.title === 'Student Details') {
+            setList(student[0]['formdata '].studentdata)
+            setFormtitle(student[0].tabletitle.studenttitle)
+
+        } else if (data.title === 'Teacher Details') {
+            setList(student[0]['formdata '].teacherdata)
+            setFormtitle(student[0].tabletitle.teachertitle)
+
+        }
+
+    }
 
     const createData = async () => {
 
@@ -33,16 +49,11 @@ const Datalist = (props) => {
                     'students[0].tablecontent': [datalist]
                 })
             } else {
-                console.log(data.tablecontent)
                 data.tablecontent.push(datalist)
-                // await updateDoc(docref, {
-                //     'students.tablecontent': (datalist)
-                // })
                 await updateDoc(docref, {
                     'students.tablecontent': data.tablecontent
                 })
             }
-
         }
         if (data.title === "Teacher Details") {
             if (details.data() === undefined) {
@@ -62,36 +73,6 @@ const Datalist = (props) => {
         setCourseInput('')
     }
 
-    // const editdata = async (value,index) => {
-    //     const docref = doc(db, 'schoolentry', 'details');
-    //     const details = await getDoc(docref);
-    //     const list = details.data().students
-    //     const list1 = details.data().teacher
-    //     setButtonPopup(true)
-    //     if (data.title === 'Student Details') {
-
-    //         list.tablecontent.map(item => {
-    //             if (item.id === value.id) {
-    //                 setTitleInput(item.name)
-    //                 setClassInput(item.class)
-    //                 setCourseInput(item.course)
-    //                 setIndex(item.id)
-
-    //             }
-    //         })
-    //     }
-    //     if (data.title === "Teacher Details") {
-    //         list1.tablecontent.map(item => {
-    //             if (item.id === value) {
-    //                 setTitleInput(item.name)
-    //                 setClassInput(item.class)
-    //                 setCourseInput(item.course)
-    //                 setIndex(item.id)
-
-    //             }
-    //         })
-    //     }
-    // }
     const editdata = async (value, index) => {
         setButtonPopup(true)
         setIndex(index)
@@ -113,22 +94,19 @@ const Datalist = (props) => {
                 }
             })
         }
-
     }
 
     const updatedata = async () => {
         data.tablecontent[indexs].name = titleInput
         data.tablecontent[indexs].class = classInput
         data.tablecontent[indexs].course = courseInput
-        const value = data.tablecontent[indexs]
         const docref = doc(db, 'schoolentry', 'details');
-        console.log(value)
 
         if (data.title === "Student Details") {
             await updateDoc(docref, {
                 'students.tablecontent': data.tablecontent
             })
-        }else if (data.title === "Teacher Details") {
+        } else if (data.title === "Teacher Details") {
             await updateDoc(docref, {
                 'teacher.tablecontent': data.tablecontent
             })
@@ -136,14 +114,13 @@ const Datalist = (props) => {
     }
     const deletedata = async (indexs) => {
         data.tablecontent.splice(indexs, 1)
-        console.log(data.tablecontent, indexs)
         const docref = doc(db, 'schoolentry', 'details');
 
         if (data.title === "Student Details") {
             await updateDoc(docref, {
                 'students.tablecontent': data.tablecontent
             })
-        }else if (data.title === "Teacher Details") {
+        } else if (data.title === "Teacher Details") {
             await updateDoc(docref, {
                 'teacher.tablecontent': data.tablecontent
             })
@@ -155,33 +132,32 @@ const Datalist = (props) => {
         setTitleInput('')
         setClassInput('')
         setCourseInput('')
+        createform()
+
     }
 
+    useEffect(() => {
+        createform()
+    })
     return (
         <div>
             <div>
                 <p>{data?.title}</p>
                 <button onClick={() => cleardata()}>Add</button>
                 <div>
-                    <table>
-                        <tr>
-                            <th>{data?.tableHeading?.name}</th>
-                            <th>{data?.tableHeading?.id}</th>
-                            <th>{data?.tableHeading?.class}</th>
-                            <th>{data?.tableHeading?.course}</th>
-                            <th >Edit</th>
-                            <th >delete</th>
-
-                        </tr>
+                    <table className='table w-50 my-5'><tr>
+                        {formtitle.map(item => {
+                            return <th  > {item}</th> 
+                        })}
+                            </tr>
                         {data?.tablecontent?.map((item, index) => {
                             return <tr>
-                                <td>{item.name}</td>
-                                <td>{item.name ? index : ''}</td>
-                                <td>{item.class}</td>
-                                <td>{item.course}</td>
-                                <td value={item.id} onClick={() => editdata(item, index)}>Edit</td>
+                                <td>{item.name}</td> 
+                                <td>{item.name ? index : ''}</td> 
+                                <td>{item.class}</td> 
+                                <td>{item.course}</td>  
+                                <td value={item.id} onClick={() => editdata(item, index)}>Edit</td> 
                                 <td value={item.id} onClick={() => deletedata(index)}>delete</td>
-
                             </tr>
                         })}
                     </table>
@@ -189,11 +165,24 @@ const Datalist = (props) => {
             </div>
             <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
                 <p id='joinourteamText'>add details</p>
-                <label>Name</label><input className='Fname' name='name' required type="text" value={titleInput} onChange={(e) => setTitleInput(e.target.value)} /><br></br>
+                <form>
+                    {list.map(item => {
+                        console.log(item, "item")
+                        return <>
+                            <label>
+                                {item.name}
+                            </label>
+                            <input type={item.type} name={item.name} required={item.required} /><br />
+                        </>
+                    })}
+                </form>
+
+
+                {/* <label>Name</label><input className='Fname' name='name' required type="text" value={titleInput} onChange={(e) => setTitleInput(e.target.value)} /><br></br>
                 <label>class</label><input className='Femail' name='class' required type="text" value={classInput} onChange={(e) => setClassInput(e.target.value)} /><br></br>
-                <label>Course</label><input className='Fphone' name='course' required type="text" value={courseInput} onChange={(e) => setCourseInput(e.target.value)} />
+                <label>Course</label><input className='Fphone' name='course' required type="text" value={courseInput} onChange={(e) => setCourseInput(e.target.value)} /> */}
                 <p className='Fbutton' onClick={createData}>Add</p>
-                <p className='Fbutton' onClick={updatedata}>update</p>
+                <p className='Fbutton' onClick={updatedata}>Edit</p>
             </Popup>
         </div>
     )

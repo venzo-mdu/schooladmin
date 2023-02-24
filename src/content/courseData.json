@@ -9,19 +9,11 @@
                 "subject" : "subject"
             }
         ],
-        "tablecont" : [
-            {
-                "name" : "priya",
-                "id" : "01",
-                "class" : "1 std",
-                "subject" : "maths"
-            },
-            {
-                "name" : "gowtham",
-                "id" : "03",
-                "class" : "LKG",
-                "subject" : "rhyms"
-            }
+        "formdata ": [
+            { "name": "teacher ID", "data": "", "type": "string",  "required": true,  "editable": true },
+            { "name": "teacher name", "data": "", "type": "string", "required": false,  "editable": true },
+            { "name": "class", "data": "", "type": "string", "required": false, "editable": true },
+            { "name": "course", "data": "", "type": "string", "required": true,  "editable": true }
         ]
     }
 ]
