@@ -1,0 +1,17 @@
+import { serverTimestamp } from "firebase/firestore";
+
+array of objects
+
+component
+
+const [state,setsate]=useState({
+    name:"",
+    email:""
+});
+
+handlechange=(e)=>{
+    setsate({...state,[e.target.name]:e.target.value})
+}
+
+1.InitialState
+2. handlechange

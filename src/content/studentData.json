@@ -15,7 +15,7 @@
                 "Id",
                 "class",
                 "Course",
-                "Date",
+                "Day",
                 "Edit",
                 "Delete"
             ]
@@ -23,70 +23,54 @@
         "formdata ": {
             "studentdata": [
                 {
-                    "name": "student ID",
-                    "data": "",
-                    "type": "text",
-                    "required": true,
-                    "value": "",
-                    "onChange": "{(e) => setTitleInput(e.target.value)}",
-                    "editable": true
-                },
-                {
-                    "name": "Student name",
-                    "data": "",
+                    "lable":"Student Name",
+                    "name": "name",
                     "type": "text",
                     "required": false,
                     "editable": true
                 },
                 {
                     "name": "class",
-                    "data": "",
                     "type": "text",
                     "required": false,
-                    "editable": true
+                    "editable": true,
+                    "lable":"Class"
                 },
                 {
                     "name": "course",
-                    "data": "",
                     "type": "text",
                     "required": true,
+                    "lable":"Course",
                     "editable": true
                 }
-            ],
+        ],
             "teacherdata": [
                 {
-                    "name": "teacher ID",
-                    "data": "",
-                    "type": "text",
-                    "required": true,
-                    "editable": true
-                },
-                {
-                    "name": "teacher name",
-                    "data": "",
+                    "name": "name",
                     "type": "text",
                     "required": false,
+                    "lable":"Teacher Name",
                     "editable": true
                 },
                 {
                     "name": "class",
-                    "data": "",
                     "type": "text",
                     "required": false,
+                    "lable":"Class",
                     "editable": true
                 },
                 {
                     "name": "course",
-                    "data": "",
                     "type": "text",
                     "required": true,
+                    "lable":"Course",
                     "editable": true
                 },
                 {
-                    "name": "date",
-                    "data": "",
+                    "name": "day",
                     "type": "text",
                     "required": true,
+                    "lable":"Day",
                     "editable": true
                 }
             ]

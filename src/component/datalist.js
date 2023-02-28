@@ -9,9 +9,25 @@ import student from '../content/studentData.json'
 
 const Datalist = (props) => {
     const data = props.data;
+    const initialValues = {
+        name: "",
+        class: "",
+        course: "",
+        day: "",
+    };
+    const [values, setValues] = useState(initialValues);
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setValues({
+            ...values,
+            [name]: value,
+        });
+    };
+
+
 
     const [buttonPopup, setButtonPopup] = useState(false);
-    const [titleInput, setTitleInput] = useState("")
+    const [titleInput, setTitleInput] = useState(values.name)
     const [classInput, setClassInput] = useState("")
     const [courseInput, setCourseInput] = useState("")
     const [indexs, setIndex] = useState('')
@@ -39,9 +55,16 @@ const Datalist = (props) => {
 
         const datalist = {
             id: v4(),
-            name: titleInput,
-            class: classInput,
-            course: courseInput,
+            name: values.name,
+            class: values.class,
+            course: values.course
+        }
+        const datalist1 = {
+            id: v4(),
+            name: values.name,
+            class: values.class,
+            course: values.course,
+            day: values.day
         }
         if (data.title === 'Student Details') {
             if (details.data() === undefined) {
@@ -58,10 +81,10 @@ const Datalist = (props) => {
         if (data.title === "Teacher Details") {
             if (details.data() === undefined) {
                 await setDoc(docref.data(), {
-                    'teacher[0].tablecontent': [datalist]
+                    'teacher[0].tablecontent': [datalist1]
                 })
             } else {
-                data.tablecontent.push(datalist)
+                data.tablecontent.push(datalist1)
                 await updateDoc(docref, {
                     'teacher.tablecontent': data.tablecontent
                 })
@@ -74,14 +97,16 @@ const Datalist = (props) => {
     }
 
     const editdata = async (value, index) => {
+
         setButtonPopup(true)
         setIndex(index)
         if (data.title === 'Student Details') {
             data.tablecontent.map(item => {
                 if (item.id === value.id) {
-                    setTitleInput(item.name)
-                    setClassInput(item.class)
-                    setCourseInput(item.course)
+                console.log(item )
+                    setValues.name(item.name)
+                    setValues.class(item.class)
+                    setValues.course(item.course)
                 }
             })
         }
@@ -147,16 +172,17 @@ const Datalist = (props) => {
                 <div>
                     <table className='table w-50 my-5'><tr>
                         {formtitle.map(item => {
-                            return <th  > {item}</th> 
+                            return <th>{item}</th>
                         })}
-                            </tr>
+                    </tr>
                         {data?.tablecontent?.map((item, index) => {
                             return <tr>
-                                <td>{item.name}</td> 
-                                <td>{item.name ? index : ''}</td> 
-                                <td>{item.class}</td> 
-                                <td>{item.course}</td>  
-                                <td value={item.id} onClick={() => editdata(item, index)}>Edit</td> 
+                                <td>{item.name}</td>
+                                <td>{item.name ? index : ''}</td>
+                                <td>{item.class}</td>
+                                <td>{item.course}</td>
+                                {item.day ? <td>{item.day}</td> : ""}
+                                <td value={item.id} onClick={() => editdata(item, index)}>Edit</td>
                                 <td value={item.id} onClick={() => deletedata(index)}>delete</td>
                             </tr>
                         })}
@@ -167,12 +193,11 @@ const Datalist = (props) => {
                 <p id='joinourteamText'>add details</p>
                 <form>
                     {list.map(item => {
-                        console.log(item, "item")
                         return <>
                             <label>
-                                {item.name}
+                                {item.lable}
                             </label>
-                            <input type={item.type} name={item.name} required={item.required} /><br />
+                            <input type={item.type} name={item.name} required={item.required} onChange={handleInputChange} /><br />
                         </>
                     })}
                 </form>
