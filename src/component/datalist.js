@@ -123,9 +123,11 @@ const Datalist = (props) => {
     }
 
     const updatedata = async () => {
-        data.tablecontent[indexs].name = titleInput
-        data.tablecontent[indexs].class = classInput
-        data.tablecontent[indexs].course = courseInput
+        console.log(values)
+        data.tablecontent[indexs].name = values.name
+        data.tablecontent[indexs].class = values.class
+        data.tablecontent[indexs].course = values.course
+        data.tablecontent[indexs].day = values.day
         const docref = doc(db, 'schoolentry', 'details');
 
         if (data.title === "Student Details") {
@@ -198,7 +200,7 @@ const Datalist = (props) => {
                             <label>
                                 {item.lable}
                             </label>
-                            <input type={item.type} name={item.name} required={item.required} onChange={handleInputChange} /><br />
+                            <input type={item.type} value={values[item.name]} name={item.name} required={item.required} onChange={handleInputChange} /><br />
                         </>
                     })}
                 </form>
