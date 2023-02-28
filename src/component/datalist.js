@@ -24,8 +24,6 @@ const Datalist = (props) => {
         });
     };
 
-
-
     const [buttonPopup, setButtonPopup] = useState(false);
     const [titleInput, setTitleInput] = useState(values.name)
     const [classInput, setClassInput] = useState("")
@@ -102,11 +100,14 @@ const Datalist = (props) => {
         setIndex(index)
         if (data.title === 'Student Details') {
             data.tablecontent.map(item => {
-                if (item.id === value.id) {
-                console.log(item )
-                    setValues.name(item.name)
-                    setValues.class(item.class)
-                    setValues.course(item.course)
+                if (item.id === value.id) {   
+                    setValues({
+                        ...values,
+                       name:item.name,
+                       class:item.class,
+                       course:item.course
+                    });
+                    console.log(values)
                 }
             })
         }
