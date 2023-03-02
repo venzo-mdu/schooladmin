@@ -200,7 +200,8 @@ const Datalist = (props) => {
                 </div>
             </div>
             <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
-                <p id='joinourteamText'>add details</p>
+                {/* {data.title === "Student Details" ? <p id='joinourteamText'>Student's details</p> : <p id='joinourteamText'>Teacher's details</p> }  */}
+                <p id='joinourteamText'> {data.title}</p>
                 <form>
                     {list.map(item => {
                         return <>
