@@ -1,3 +1,5 @@
+
+
 .contentpage{
     width: 100%;
     display: flex;
@@ -17,17 +19,63 @@
     background-color: #3f3c3c;
     transition: .5s ease;
     overflow-x: hidden;
-    padding-top: 20px;
+    padding-top: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    font-size: 22px;
+    font-family: 'Lobster';
   }
 
  .contentdisplay{
-    margin-top: 5%;
+    margin-top: 1%;
     width: 85%;
     position: fixed;
     background-color: beige;
     margin-left: 15%;
     height: 100%;
+    font-family: 'Lobster';
+    font-size: 22px;
  } 
+ .head{
+    font-size: 30px;
+    color: red;
+    font-family: 'Lobster';
+    
+ }
+ .table{
+    width: 75%;
+ }
+ .table th {
+    font-size: 27px;
+ }
+ .table tr td{
+    font-size: 20px;
+    font-weight: 100;
+    color: #3f3c3c;
+ }
+ a {
+    color: white;
+    text-decoration: none;
+}
+
+a:hover {
+    color:#00A0C6; 
+    text-decoration:none; 
+    cursor:pointer;  
+}
+.logo{
+    width: 60%;
+    border-radius: 24px;
+    margin-bottom: 13%;
+}
+.active-link{
+    color: #FFFFFF !important;
+}
+.add{
+    width: 10%;
+    border-radius: 8px;
+}
+.edit{
+    width: 40px;
+}

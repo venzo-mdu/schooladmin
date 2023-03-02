@@ -6,6 +6,9 @@ import { useState } from 'react'
 import { getDoc, doc, updateDoc, setDoc } from 'firebase/firestore';
 import '../component/popup/popup.css'
 import student from '../content/studentData.json'
+import edit from '../images/edit.png'
+import del from '../images/delete.jfif'
+
 
 const Datalist = (props) => {
     const data = props.data;
@@ -114,9 +117,13 @@ const Datalist = (props) => {
         if (data.title === "Teacher Details") {
             data.tablecontent.map(item => {
                 if (item.id === value.id) {
-                    setTitleInput(item.name)
-                    setClassInput(item.class)
-                    setCourseInput(item.course)
+                    setValues({
+                        ...values,
+                       name:item.name,
+                       class:item.class,
+                       course:item.course,
+                       day:item.day
+                    });
                 }
             })
         }
@@ -171,9 +178,9 @@ const Datalist = (props) => {
         <div>
             <div>
                 <p>{data?.title}</p>
-                <button onClick={() => cleardata()}>Add</button>
+                <button onClick={() => cleardata()} className='add'>Add</button>
                 <div>
-                    <table className='table w-50 my-5'><tr>
+                    <table className='table my-5'><tr>
                         {formtitle.map(item => {
                             return <th>{item}</th>
                         })}
@@ -185,8 +192,8 @@ const Datalist = (props) => {
                                 <td>{item.class}</td>
                                 <td>{item.course}</td>
                                 {item.day ? <td>{item.day}</td> : ""}
-                                <td value={item.id} onClick={() => editdata(item, index)}>Edit</td>
-                                <td value={item.id} onClick={() => deletedata(index)}>delete</td>
+                                <td value={item.id} onClick={() => editdata(item, index)}><img src={edit} alt='edit' className='edit'></img></td>
+                                <td value={item.id} onClick={() => deletedata(index)}><img src={del} alt='edit' className='edit'></img></td>
                             </tr>
                         })}
                     </table>
