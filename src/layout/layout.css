@@ -7,9 +7,13 @@
 .header{
     align-items: center;
     margin-left: 15%;
-    justify-self: center;
-
+    justify-self: center;   
+    background-image: url('../images/banner.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+   
 }
+
 .sidenav {
     height: 100%;
     width: 15%;
@@ -28,7 +32,7 @@
   }
 
  .contentdisplay{
-    margin-top: 1%;
+    padding-top: 2%;
     width: 85%;
     position: fixed;
     background-color: beige;
@@ -40,8 +44,7 @@
  .head{
     font-size: 30px;
     color: red;
-    font-family: 'Lobster';
-    
+    font-family: 'Lobster';   
  }
  .table{
     width: 75%;
@@ -54,12 +57,12 @@
     font-weight: 100;
     color: #3f3c3c;
  }
- a {
+a {
     color: white;
     text-decoration: none;
 }
 
-a:hover {
+a:hover,a:active {
     color:#00A0C6; 
     text-decoration:none; 
     cursor:pointer;  
@@ -69,9 +72,7 @@ a:hover {
     border-radius: 24px;
     margin-bottom: 13%;
 }
-.active-link{
-    color: #FFFFFF !important;
-}
+
 .add{
     width: 10%;
     border-radius: 8px;

@@ -3,17 +3,17 @@
         "name": "student Details",
         "tabletitle": {
             "studenttitle": [
-                "name",
+                "Name",
                 "Id",
-                "class",
+                "Class",
                 "Course",
                 "Edit",
                 "Delete"
             ],
             "teachertitle": [
-                "name",
+                "Name",
                 "Id",
-                "class",
+                "Class",
                 "Course",
                 "Day",
                 "Edit",
